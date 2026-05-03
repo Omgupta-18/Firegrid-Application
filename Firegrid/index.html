@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EV Charging Hub Fire Command</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="EV FireGrid home">
+          <span class="brand-mark">EV</span>
+          <span>
+            <strong>FireGrid</strong>
+            <small>Underground response twin</small>
+          </span>
+        </a>
+        <div class="status-strip" aria-label="Incident status">
+          <span class="status critical">Thermal runaway</span>
+          <span class="status toxic">Toxic smoke</span>
+          <span class="status warning">ESS exposure risk</span>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="command-console" aria-label="EV fire command console">
+          <div class="hero-row">
+            <div class="hero-copy">
+              <p class="eyebrow">Live response planner</p>
+              <h1>EV Charging Hub Fire Command</h1>
+              <p class="lede">
+                A low-visibility evacuation and lithium-ion suppression board for a multi-level
+                underground parking fire.
+              </p>
+            </div>
+
+            <div class="phase-dock" role="tablist" aria-label="Response phase">
+              <button class="phase-tab active" role="tab" aria-selected="true" data-phase="initial">0-15 min</button>
+              <button class="phase-tab" role="tab" aria-selected="false" data-phase="stabilize">15-45 min</button>
+              <button class="phase-tab" role="tab" aria-selected="false" data-phase="recovery">Recovery</button>
+            </div>
+          </div>
+
+          <div class="console-grid">
+            <section class="twin-panel" aria-labelledby="twinTitle">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Experimental layer</p>
+                  <h2 id="twinTitle">Tenable Path Twin</h2>
+                </div>
+                <div class="fingerprint">
+                  <span>Incident fingerprint</span>
+                  <strong id="incidentFingerprint">EVT-000</strong>
+                </div>
+              </div>
+
+              <canvas
+                id="incidentCanvas"
+                width="900"
+                height="560"
+                aria-label="Interactive map of basement EV fire, smoke movement, exits, and response path"
+              ></canvas>
+
+              <div class="legend" aria-label="Map legend">
+                <span><i class="dot fire"></i>Battery fire</span>
+                <span><i class="dot smoke"></i>Smoke field</span>
+                <span><i class="dot route"></i>Chosen egress</span>
+                <span><i class="dot ess"></i>Battery storage</span>
+              </div>
+            </section>
+
+            <aside class="control-rail" aria-label="Incident controls">
+              <div class="score-tile">
+                <span>Egress confidence</span>
+                <strong id="egressScore">72%</strong>
+                <div class="meter" aria-hidden="true"><span id="scoreBar"></span></div>
+              </div>
+
+              <div class="sensor-grid" aria-label="Live indicators">
+                <div>
+                  <span>Battery heat</span>
+                  <strong id="heatIndex">High</strong>
+                </div>
+                <div>
+                  <span>Smoke load</span>
+                  <strong id="smokeLevel">Severe</strong>
+                </div>
+                <div>
+                  <span>Operating mode</span>
+                  <strong id="modeLabel">Initial attack</strong>
+                </div>
+                <div>
+                  <span>Time band</span>
+                  <strong id="modeDetail">First 15 minutes</strong>
+                </div>
+              </div>
+
+              <div class="range-stack">
+                <label class="range-control" for="smokeRange">
+                  <span>Smoke density</span>
+                  <input id="smokeRange" type="range" min="1" max="5" value="4" />
+                </label>
+                <label class="range-control" for="heatRange">
+                  <span>Battery heat pulse</span>
+                  <input id="heatRange" type="range" min="1" max="5" value="4" />
+                </label>
+              </div>
+
+              <div class="switch-grid">
+                <label class="switch-row">
+                  <input id="stairA" type="checkbox" checked />
+                  <span>Stair A smoke affected</span>
+                </label>
+                <label class="switch-row">
+                  <input id="stairB" type="checkbox" />
+                  <span>Stair B smoke affected</span>
+                </label>
+                <label class="switch-row">
+                  <input id="pressurized" type="checkbox" checked />
+                  <span>Stair pressurization online</span>
+                </label>
+                <label class="switch-row">
+                  <input id="victimLocated" type="checkbox" checked />
+                  <span>Unconscious person near stair</span>
+                </label>
+                <label class="switch-row">
+                  <input id="essExposure" type="checkbox" checked />
+                  <span>Battery storage exposed</span>
+                </label>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="decision-band" aria-label="Current recommended action">
+          <div class="decision-copy">
+            <p class="eyebrow">Decision engine</p>
+            <h2 id="routeDecision"></h2>
+            <p id="routeRationale"></p>
+          </div>
+          <div class="micro-feed" aria-label="Action feed">
+            <div class="feed-title">
+              <span>Next three moves</span>
+              <strong id="riskState">Critical</strong>
+            </div>
+            <ol id="planFeed"></ol>
+          </div>
+        </section>
+
+        <section class="priority-section" aria-labelledby="priorityTitle">
+          <div class="section-title">
+            <p class="eyebrow">Command focus</p>
+            <h2 id="priorityTitle">Immediate Priorities</h2>
+          </div>
+          <ol id="priorityList" class="priority-list"></ol>
+        </section>
+
+        <section class="tabbed-area" aria-label="Response playbook">
+          <nav class="tabs" aria-label="Playbook tabs">
+            <button class="content-tab active" data-tab="evacuation">Evacuation</button>
+            <button class="content-tab" data-tab="suppression">Suppression</button>
+            <button class="content-tab" data-tab="ventilation">Smoke Control</button>
+            <button class="content-tab" data-tab="prevention">Prevention</button>
+          </nav>
+          <div id="tabContent" class="tab-content"></div>
+        </section>
+
+        <section class="system-sequence" aria-label="Facility control sequence">
+          <div class="section-title">
+            <p class="eyebrow">Facility actions</p>
+            <h2>Control Sequence</h2>
+          </div>
+          <div class="sequence-grid">
+            <article>
+              <span>01</span>
+              <h3>Alarm and isolate</h3>
+              <p>Trigger evacuation, freeze basement traffic, and shut down EVSE plus affected ESS feeds.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Protect exits</h3>
+              <p>Pressurize stairs, close fire doors, and route people to the cleanest confirmed path.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Steer smoke</h3>
+              <p>Extract smoke toward exhaust shafts while keeping airflow away from egress routes.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <h3>Cool and watch</h3>
+              <p>Apply sustained water, scan with thermal imaging, and maintain a reignition watch.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="source-band" aria-label="Reference sources">
+          <h2>Reference Basis</h2>
+          <a href="https://www.usfa.fema.gov/a-z/lithium-ion-batteries/risks-and-response-strategies/" target="_blank" rel="noreferrer">USFA lithium-ion response</a>
+          <a href="https://www.nhtsa.gov/emergency-response-guides/" target="_blank" rel="noreferrer">NHTSA EV response guides</a>
+          <a href="https://www.ntsb.gov/safety/safety-studies/Pages/HWY19SP002.aspx" target="_blank" rel="noreferrer">NTSB EV battery fire risks</a>
+          <a href="https://www.nfpa.org/-/media/project/storefront/catalog/files/emergency-response/emergency-response-guides/ev-fire-qr-info-card.pdf?rev=ceb4904b5933481383881500b8a57ecd" target="_blank" rel="noreferrer">NFPA EV quick reference</a>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
